@@ -36,7 +36,7 @@
 #define accept(tag, item_ptr_name, code) \
 case tag: \
 { \
-    tag##_t* item_ptr_name = &__tu->untagged_union.tag; \
+    tag##_t* const item_ptr_name = &__tu->untagged_union.tag; \
     code \
     break; \
 }
