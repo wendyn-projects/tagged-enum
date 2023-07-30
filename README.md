@@ -66,11 +66,11 @@ what should be done with the variable holding the correctly cast union member.
 Then the whole thing needs to be closed with `tagged_end` macro.
 
 ## Example File
-You can check the `example.c`, to see what is going on, try following command:
+You can check the `example.c`, to see what is going on try following command:
 ```bash
 gcc -D_STDIO_H -D_STDDEF_H example.c -E | cat -s | sed '/^#/d' > example.i
 ```
-This will do just the preprocessing step of the compiler and also remove all the extra junk.
+This will do just the preprocessing step of gcc and also remove all the extra junk.
 
 ---
 _Note: This library is just a fun experiment and exists only to share knowledge about fun features of C._
