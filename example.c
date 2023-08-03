@@ -11,11 +11,11 @@ struct Square {
 };
 
 #define TAGGED_UNION \
-    USING (Shape, \
-        ENTRY(LINE, Line) \
-        ENTRY(SQUARE, struct Square) \
-        ENTRY(NUMBER, float) \
-        ENTRY(TRIANGLE, struct { float mA, mB, mC; }) \
+    AS(Shape, \
+        MEMBER(LINE, Line) \
+        MEMBER(SQUARE, struct Square) \
+        MEMBER(NUMBER, float) \
+        MEMBER(TRIANGLE, struct { float mA, mB, mC; }) \
     )
 #include "tagged_union.h"
 #undef TAGGED_UNION
@@ -32,15 +32,15 @@ int main(void)
     
     for (i = 0; i < sizeof(lShapes) / sizeof(*lShapes); i++)
     {
-        tagged_switch(Shape, lShapes + i)
-            accept(LINE, line,
+        tagged_pick(Shape, lShapes + i)
+            on_tag(LINE, line,
                 line->mDirection = 0;
                 printf("len: %f dir: %f\n", line->mLength, line->mDirection);
             )
-            accept(TRIANGLE, triangle,
+            on_tag(TRIANGLE, triangle,
                 printf("sides: %f %f %f\n", triangle->mA, triangle->mB, triangle->mC);
             )
-            accept(NUMBER, num,
+            on_tag(NUMBER, num,
                 printf("%f\n", *num);
             )
         tagged_end

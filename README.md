@@ -6,19 +6,19 @@ To declare a type use the header as a template using `TAGGED_UNION` macro.
 This macro can have a following form:
 ```c
 #define TAGGED_UNION \
-    USING(Shape, \
-        ENTRY(LINE, Line) \
-        ENTRY(SQUARE, struct Square) \
-        ENTRY(NUMBER, float) \
-        ENTRY(TRIANGLE, struct { float mA, mB, mC; }) \
+    AS(Shape, \
+        MEMBER(LINE, Line) \
+        MEMBER(SQUARE, struct Square) \
+        MEMBER(NUMBER, float) \
+        MEMBER(TRIANGLE, struct { float mA, mB, mC; }) \
     )
 #include "tagged_union.h"
 #undef TAGGED_UNION
 ```
-`TAGGED_UNION` now contains call to `USING` macro which is used inside the header to generate code for the tagged-union.
+`TAGGED_UNION` now contains call to `AS` macro which is used inside the header to generate code for the tagged-union.
 
 First we specify the name of the tagged-union type - `Shape`,
-then using pattern called [x-macros](https://en.wikipedia.org/wiki/X_macro) with each `ENTRY` we specify label for the tag enum and respective union member type.
+then using pattern called [x-macros](https://en.wikipedia.org/wiki/X_macro) with each `MEMBER` we specify label for the tag enum and respective union member type.
 
 Notice we can pass the member types in any type form, since the header will make a `typedef` for each member type _(the reason for that is we can later get the type name just from the tag enum label)_.
 
@@ -38,30 +38,30 @@ then the tag enum label will tell the both set the right tag and make sure the c
 lastly we initialize the member.
 
 ## Working with an Instances of a Tagged-Union
-Header provides `tagged_switch` macro which helps to process individual cases.
+Header provides `tagged_pick` macro which helps to process individual cases.
 ```c
 for (i = 0; i < sizeof(lShapes) / sizeof(*lShapes); i++)
 {
-    tagged_switch(Shape, lShapes + i)
-        accept(LINE, line,
+    tagged_pick(Shape, lShapes + i)
+        on_tag(LINE, line,
             line->mDirection = 0;
             printf("len: %f dir: %f\n", line->mLength, line->mDirection);
         )
-        accept(TRIANGLE, triangle,
+        on_tag(TRIANGLE, triangle,
             printf("sides: %f %f %f\n", triangle->mA, triangle->mB, triangle->mC);
         )
-        accept(NUMBER, num,
+        on_tag(NUMBER, num,
             printf("%f\n", *num);
         )
     tagged_end
 }
 ```
-This macro **stores a pointer** to the tagged-union for later use _(compiler should be able to optimize this out)_,
-that is why the macro takes type of the tagged-union and a pointer to it.
-Each `accept` handles the specific union member,
-for that you need to specify tag enum label _(from which the right member and its type is derrived)_,
-name of a variable where pointer to the member will be taken **from previously stored** tagged-union _(compiler should be able to optimize this out)_ and 
-what should be done with the variable holding the correctly cast union member.
+This macro is a wrapper around `switch` statement and **stores a pointer** to the tagged-union for later use _(compiler should be able to optimize this out)_,
+that is why the macro requires the type of the tagged-union and a pointer to it.
+Each `on_tag` handles the specific union member,
+for that you need to specify tag enum **label** _(from which the right member and its type is derrived)_,
+name of a variable to which a pointer to the member will be stored **from previously stored** tagged-union _(compiler should be able to optimize this out)_ and 
+what should be done with the variable holding the correctly cast union member _(this code will have its own `{ /*scope*/ break; }`, so there is no "fallthrough" for individual "cases")_.
 
 Then the whole thing needs to be closed with `tagged_end` macro.
 
