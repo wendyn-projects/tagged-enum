@@ -56,11 +56,11 @@ for (i = 0; i < sizeof(lShapes) / sizeof(*lShapes); i++)
     tagged_end
 }
 ```
-This macro is a wrapper around `switch` statement and **stores a pointer** to the tagged-union for later use _(compiler should be able to optimize this out)_,
+This macro is a wrapper around `switch` statement and <a id="stored-tu-ptr"></a>**stores a pointer** to the tagged-union for later use _(compiler should be able to optimize this out)_,
 that is why the macro requires the type of the tagged-union and a pointer to it.
 Each `on_tag` handles the specific union member,
 for that you need to specify tag enum **label** _(from which the right member and its type is derrived)_,
-name of a variable to which a pointer to the member will be stored **from previously stored** tagged-union _(compiler should be able to optimize this out)_ and 
+name of a variable to which a pointer to the member will be stored [from previously stored](#stored-tu-ptr) tagged-union _(compiler should be able to optimize this out)_ and 
 what should be done with the variable holding the correctly cast union member _(this code will have its own `{ /*scope*/ break; }`, so there is no "fallthrough" for individual "cases")_.
 
 Then the whole thing needs to be closed with `tagged_end` macro.
