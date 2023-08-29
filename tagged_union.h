@@ -48,10 +48,9 @@ case tag: \
 
 #endif
 
-#define AS(_, ...) __VA_ARGS__
-
 /* Templated Header Side */
 #ifdef TAGGED_UNION
+#define AS(_, ...) __VA_ARGS__
 /* Creating custom typedefs based on the tag enum labels so that we can later get it just from the enum label itself. */
 #define MEMBER(tag, ...)  typedef __VA_ARGS__ tag##_t;
 TAGGED_UNION
@@ -65,9 +64,10 @@ typedef struct {
 #define MEMBER(tag, ...)  tag##_t tag;
     union { TAGGED_UNION } untagged_union;
 #undef MEMBER
-
 #undef AS
+
 #define AS(tagged_union_type, _) tagged_union_type
 } TAGGED_UNION;
 #undef AS
+
 #endif
