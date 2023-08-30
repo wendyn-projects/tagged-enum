@@ -22,7 +22,7 @@
  * @param tagged_union_type type of the tagged-union to store the pointer.
  * @param tagged_union_ptr pointer to the tagged-union that is stored and which `switch` gets the tag from.
  */
-#define tagged_pick(tagged_union_type, tagged_union_ptr) \
+#define tagged_match(tagged_union_type, tagged_union_ptr) \
 { \
     tagged_union_type* const __tu = (tagged_union_ptr); \
     switch((tagged_union_ptr)->tag_value) {

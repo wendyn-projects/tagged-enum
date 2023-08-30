@@ -32,7 +32,7 @@ int main(void)
     
     for (i = 0; i < sizeof(lShapes) / sizeof(*lShapes); i++)
     {
-        tagged_pick(Shape, lShapes + i)
+        tagged_match(Shape, lShapes + i)
             on_tag(LINE, line,
                 line->mDirection = 0;
                 printf("len: %f dir: %f\n", line->mLength, line->mDirection);
