@@ -15,14 +15,14 @@
  * @param tag enum label tag of the union member
  * @param ... initialization of the union member
  */
-#define new_tagged_enum(tagged_union_type, tag, ...) (tagged_union_type){ .tag_value = tag, .untagged_union.tag = __VA_ARGS__ }
+#define tu_new(tagged_union_type, tag, ...) (tagged_union_type){ .tag_value = tag, .untagged_union.tag = __VA_ARGS__ }
 
 /**
  * `switch` wrapper that stores the pointer to the union for later use, which compiler should be able to optimize it out.
  * @param tagged_union_type type of the tagged-union to store the pointer.
  * @param tagged_union_ptr pointer to the tagged-union that is stored and which `switch` gets the tag from.
  */
-#define tagged_match(tagged_union_type, tagged_union_ptr) \
+#define tu_match(tagged_union_type, tagged_union_ptr) \
 { \
     tagged_union_type* const __tu = (tagged_union_ptr); \
     switch((tagged_union_ptr)->tag_value) {
@@ -44,7 +44,7 @@ case tag: \
 /**
  * end of the wrapped `switch` statement
  */
-#define tagged_end } }
+#define tu_end } }
 
 #endif
 

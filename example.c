@@ -24,15 +24,15 @@ int main(void)
 {
     size_t i;
     Shape lShapes[] = {
-        new_tagged_enum(Shape, LINE,    { 1, 2 }),
-        new_tagged_enum(Shape, TRIANGLE,  { 3, 5, 6 }),
-        new_tagged_enum(Shape, NUMBER,  7),
-        new_tagged_enum(Shape, SQUARE,  { 8 })
+        tu_new(Shape, LINE,    { 1, 2 }),
+        tu_new(Shape, TRIANGLE,  { 3, 5, 6 }),
+        tu_new(Shape, NUMBER,  7),
+        tu_new(Shape, SQUARE,  { 8 })
     };
     
     for (i = 0; i < sizeof(lShapes) / sizeof(*lShapes); i++)
     {
-        tagged_match(Shape, lShapes + i)
+        tu_match(Shape, lShapes + i)
             on_tag(LINE, line,
                 line->mDirection = 0;
                 printf("len: %f dir: %f\n", line->mLength, line->mDirection);
@@ -43,7 +43,7 @@ int main(void)
             on_tag(NUMBER, num,
                 printf("%f\n", *num);
             )
-        tagged_end
+        tu_end
     }
     return 0;
 }
