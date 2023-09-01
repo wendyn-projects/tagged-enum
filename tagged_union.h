@@ -52,22 +52,22 @@ case tag: \
 #ifdef TAGGED_UNION
 /* Creating custom typedefs based on the tag enum labels so that we can later get it just from the enum label itself. */
 #define AS(_, ...) __VA_ARGS__
-#define MEMBER(tag, ...)  typedef __VA_ARGS__ tag##_t;
+#define WITH(tag, ...)  typedef __VA_ARGS__ tag##_t;
 TAGGED_UNION
-#undef MEMBER
+#undef WITH
 #undef AS
 
 /* Constructing the tagged-union type. */
 typedef struct {
 #define AS(_, ...) __VA_ARGS__
-#define MEMBER(tag, ...)  tag,
+#define WITH(tag, ...)  tag,
     enum { TAGGED_UNION } tag_value;
-#undef MEMBER
+#undef WITH
 #undef AS
 #define AS(_, ...) __VA_ARGS__
-#define MEMBER(tag, ...)  tag##_t tag;
+#define WITH(tag, ...)  tag##_t tag;
     union { TAGGED_UNION } untagged_union;
-#undef MEMBER
+#undef WITH
 #undef AS
 
 #define AS(tagged_union_type, _) tagged_union_type

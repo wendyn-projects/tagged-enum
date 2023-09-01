@@ -12,10 +12,10 @@ struct Square {
 
 #define TAGGED_UNION \
     AS(Shape, \
-        MEMBER(LINE, Line) \
-        MEMBER(SQUARE, struct Square) \
-        MEMBER(NUMBER, float) \
-        MEMBER(TRIANGLE, struct { float mA, mB, mC; }) \
+        WITH(LINE, Line) \
+        WITH(SQUARE, struct Square) \
+        WITH(NUMBER, float) \
+        WITH(TRIANGLE, struct { float mA, mB, mC; }) \
     )
 #include "tagged_union.h"
 #undef TAGGED_UNION

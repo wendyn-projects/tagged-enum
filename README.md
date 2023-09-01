@@ -7,10 +7,10 @@ This macro can have a following form:
 ```c
 #define TAGGED_UNION \
     AS(Shape, \
-        MEMBER(LINE, Line) \
-        MEMBER(SQUARE, struct Square) \
-        MEMBER(NUMBER, float) \
-        MEMBER(TRIANGLE, struct { float mA, mB, mC; }) \
+        WITH(LINE, Line) \
+        WITH(SQUARE, struct Square) \
+        WITH(NUMBER, float) \
+        WITH(TRIANGLE, struct { float mA, mB, mC; }) \
     )
 #include "tagged_union.h"
 #undef TAGGED_UNION
@@ -18,7 +18,7 @@ This macro can have a following form:
 `TAGGED_UNION` now contains call to `AS` macro which is used inside the header to generate code for the tagged-union.
 
 First we specify the name of the tagged-union type - `Shape`,
-then using pattern called [x-macros](https://en.wikipedia.org/wiki/X_macro) with each `MEMBER` we specify label for the tag enum and respective union member type.
+then using pattern called [x-macros](https://en.wikipedia.org/wiki/X_macro) with each `WITH` we specify label for the tag enum and respective union member type.
 
 Notice we can pass the member types in any type form, since the header will make a `typedef` for each member type _(the reason for that is we can later get the type name just from the tag enum label)_.
 
