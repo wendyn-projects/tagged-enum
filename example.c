@@ -26,7 +26,7 @@ int main(void)
     Shape lShapes[] = {
         tu_new(Shape, LINE,     { 1, 2 }    ),
         tu_new(Shape, TRIANGLE, { 3, 5, 6 } ),
-        tu_new(Shape, NUMBER,   7           ),
+        tu_new(Shape, NUMBER,     7         ),
         tu_new(Shape, SQUARE,   { 8 }       )
     };
     
