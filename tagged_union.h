@@ -1,7 +1,7 @@
 /*
  *       __|\/\/|__
  *       \   '    /
- * |/ |\ < ' |) ' > | |\  |\| T 
+ * |/ |\ < ' |) ' > | |\  |\| T
  * '  ' `/_ .'`. _\ ' ' ` ' ' '
  *         |/\/\|
  */
@@ -11,7 +11,6 @@
 #define TAGGED_UNION_H_
 /*
  * Constructs the tagged-union instance.
- * @param tagged_union_type type of the tagged-union
  * @param tag enum label tag of the union member
  * @param ... initialization of the union member
  */
@@ -25,12 +24,13 @@
 #define tu_match(tagged_union_type, tagged_union_ptr) \
 { \
     tagged_union_type* const __tu = (tagged_union_ptr); \
-    switch((tagged_union_ptr)->tag_value) {
-        
+    switch ((tagged_union_ptr)->tag_value) \
+    {
+
 /**
- * Case wrapper that safely casts the right union member (from previously stored pointer) based on the tag.
+ * `case` wrapper that safely casts the right union member (from previously stored pointer) based on the tag.
  * @param tag tag enum **label**
- * @param item_ptr_name pointer that will be created for the correct union member, compiler should be able to optimize it out.
+ * @param member_ptr_name pointer that will be created for the correct union member, compiler should be able to optimize it out.
  * @param code for the union member
  */
 #define on_tag(tag, member_ptr_name, code) \
