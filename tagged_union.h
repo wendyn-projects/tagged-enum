@@ -15,7 +15,7 @@
  * @param tag enum label tag of the union member
  * @param ... initialization of the union member
  */
-#define tu_new(tagged_union_type, tag, ...) (tagged_union_type){ .tag_value = tag, .untagged_union.tag = __VA_ARGS__ }
+#define tu_new(tag, ...) { .tag_value = tag, .untagged_union.tag = __VA_ARGS__ }
 
 /**
  * `switch` wrapper that stores the pointer to the union for later use, which compiler should be able to optimize it out.

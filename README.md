@@ -5,12 +5,14 @@ A single header C library for safe construction and use of [tagged-unions](https
 To define a tagged-union just `#define` a macro that takes 2 arguments:
 _2nd<sup>nd</sup> arg. can be ignored_, but the 1<sup>st</sup> one is used to define members:
 ```c
-#define Shape(ENTRY, ...) \
-    ENTRY(LINE, Line) \
-    ENTRY(SQUARE, struct Square) \
-    ENTRY(NUMBER, float) \
-    ENTRY(TRIANGLE, struct { float mA, mB, mC; })
+#define Shape(entry, ...) \
+    entry(LINE, Line) \
+    entry(SQUARE, struct Square) \
+    entry(NUMBER, float) \
+    entry(TRIANGLE, struct { float mA, mB, mC; })
 ```
+_Note that the arguments can have any name._
+
 Then you just pass it to `tagged_union` macro:
 ```c
 tagged_union(Shape)
@@ -22,10 +24,10 @@ For type-safe tagged-union initialization the header provides `tu_new` macro.
 To create an array it can be used like this:
 ```c
 Shape lShapes[] = {
-    tu_new(Shape, LINE,      { 1, 2 }    ),
-    tu_new(Shape, TRIANGLE,  { 3, 5, 6 } ),
-    tu_new(Shape, NUMBER,      7         ),
-    tu_new(Shape, SQUARE,    { 8 }       )
+    tu_new(LINE,      { 1, 2 }    ),
+    tu_new(TRIANGLE,  { 3, 5, 6 } ),
+    tu_new(NUMBER,      7         ),
+    tu_new(SQUARE,    { 8 }       )
 };
 ```
 First we need to specify the tagged-union type,

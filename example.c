@@ -11,11 +11,11 @@ struct Square {
     float mSide;
 };
 
-#define Shape(ENTRY, ...) \
-    ENTRY(LINE, Line) \
-    ENTRY(SQUARE, struct Square) \
-    ENTRY(NUMBER, float) \
-    ENTRY(TRIANGLE, struct { float mA, mB, mC; })
+#define Shape(entry, ...) \
+    entry(LINE, Line) \
+    entry(SQUARE, struct Square) \
+    entry(NUMBER, float) \
+    entry(TRIANGLE, struct { float mA, mB, mC; })
 
 tagged_union(Shape)
 
@@ -23,10 +23,10 @@ int main(void)
 {
     size_t i;
     Shape lShapes[] = {
-        tu_new(Shape, LINE,     { 1, 2 }    ),
-        tu_new(Shape, TRIANGLE, { 3, 5, 6 } ),
-        tu_new(Shape, NUMBER,     7         ),
-        tu_new(Shape, SQUARE,   { 8 }       )
+        tu_new(LINE,     { 1, 2 }    ),
+        tu_new(TRIANGLE, { 3, 5, 6 } ),
+        tu_new(NUMBER,     7         ),
+        tu_new(SQUARE,   { 8 }       )
     };
     
     for (i = 0; i < sizeof(lShapes) / sizeof(*lShapes); i++)
