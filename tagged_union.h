@@ -46,33 +46,15 @@ case tag: \
  */
 #define tu_end } }
 
-#endif
+#define __tu_create_typedefs(tag, ...) typedef __VA_ARGS__ tag##_t;
+#define __tu_create_tags(tag, ...) tag,
+#define __tu_create_union_members(tag, ...) tag##_t tag;
 
-/* Templated Header Side */
-#ifdef TAGGED_UNION
-
-/* Creating custom typedefs based on the tag enum labels so that we can later get it just from the enum label itself. */
-#define AS(_, ...) __VA_ARGS__
-#define WITH(tag, ...) typedef __VA_ARGS__ tag##_t;
-TAGGED_UNION
-#undef WITH
-#undef AS
-
-/* Constructing the tagged-union type. */
-typedef struct {
-#define AS(_, ...) __VA_ARGS__
-#define WITH(tag, ...) tag,
-    enum { TAGGED_UNION } tag_value;
-#undef WITH
-#undef AS
-#define AS(_, ...) __VA_ARGS__
-#define WITH(tag, ...) tag##_t tag;
-    union { TAGGED_UNION } untagged_union;
-#undef WITH
-#undef AS
-
-#define AS(tagged_union_type, _) tagged_union_type
-} TAGGED_UNION;
-#undef AS
+#define tagged_union(entries) \
+entries(__tu_create_typedefs,) \
+typedef struct { \
+    enum { entries(__tu_create_tags,) } tag_value; \
+    union { entries(__tu_create_union_members,) } untagged_union; \
+} entries;
 
 #endif

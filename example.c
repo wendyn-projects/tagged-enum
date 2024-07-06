@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stddef.h>
+#include "tagged_union.h"
 
 typedef struct {
     float mLength;
@@ -10,15 +11,13 @@ struct Square {
     float mSide;
 };
 
-#define TAGGED_UNION \
-    AS(Shape, \
-        WITH(LINE, Line) \
-        WITH(SQUARE, struct Square) \
-        WITH(NUMBER, float) \
-        WITH(TRIANGLE, struct { float mA, mB, mC; }) \
-    )
-#include "tagged_union.h"
-#undef TAGGED_UNION
+#define Shape(ENTRY, ...) \
+    ENTRY(LINE, Line) \
+    ENTRY(SQUARE, struct Square) \
+    ENTRY(NUMBER, float) \
+    ENTRY(TRIANGLE, struct { float mA, mB, mC; })
+
+tagged_union(Shape)
 
 int main(void)
 {
