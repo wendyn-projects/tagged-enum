@@ -31,13 +31,13 @@
  * `case` wrapper that safely casts the right union member (from previously stored pointer) based on the tag.
  * @param tag tag enum **label**
  * @param member_ptr_name pointer that will be created for the correct union member, compiler should be able to optimize it out.
- * @param code for the union member
+ * @param ... code for the union member
  */
-#define on_tag(tag, member_ptr_name, code) \
+#define on_tag(tag, member_ptr_name, ...) \
 case tag: \
 { \
     tag##_t* const member_ptr_name = &__tu->untagged_union.tag; \
-    code \
+    __VA_ARGS__ \
     break; \
 }
 
