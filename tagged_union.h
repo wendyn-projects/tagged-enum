@@ -21,7 +21,7 @@
  * @param tagged_union_type type of the tagged-union to store the pointer.
  * @param tagged_union_ptr pointer to the tagged-union that is stored and which `switch` gets the tag from.
  */
-#define tu_match(tagged_union_type, tagged_union_ptr) \
+#define tu_resolve(tagged_union_type, tagged_union_ptr) \
 { \
     tagged_union_type* const __tu = (tagged_union_ptr); \
     switch ((tagged_union_ptr)->tag_value) \
@@ -33,7 +33,7 @@
  * @param member_ptr_name pointer that will be created for the correct union member, compiler should be able to optimize it out.
  * @param ... code for the union member
  */
-#define on_tag(tag, member_ptr_name, ...) \
+#define tu_matches(tag, member_ptr_name, ...) \
 case tag: \
 { \
     tag##_t* const member_ptr_name = &__tu->untagged_union.tag; \
@@ -44,7 +44,7 @@ case tag: \
 /**
  * end of the wrapped `switch` statement
  */
-#define tu_end } }
+#define tu_resolved } }
 
 #define __tu_create_typedefs(tag, ...) typedef __VA_ARGS__ tag##_t;
 #define __tu_create_tags(tag, ...) tag,

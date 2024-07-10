@@ -35,27 +35,27 @@ then the tag enum label will tell the both set the right tag and make sure the c
 lastly we initialize the member.
 
 ## Working with an Instances of a Tagged-Union
-Header provides `tu_match` macro which helps to process individual cases.
+Header provides `tu_resolve` macro which helps to process individual cases.
 ```c
 for (i = 0; i < sizeof(lShapes) / sizeof(*lShapes); i++)
 {
-    tu_match (Shape, lShapes + i)
-        on_tag (LINE, line,
+    tu_resolve (Shape, lShapes + i)
+        tu_matches (LINE, line,
             line->mDirection = 0;
             printf("len: %f dir: %f\n", line->mLength, line->mDirection);
         )
-        on_tag (TRIANGLE, triangle,
+        tu_matches (TRIANGLE, triangle,
             printf("sides: %f %f %f\n", triangle->mA, triangle->mB, triangle->mC);
         )
-        on_tag (NUMBER, num,
+        tu_matches (NUMBER, num,
             printf("%f\n", *num);
         )
-    tagged_end
+    tu_resolved
 }
 ```
 This macro is a wrapper around `switch` statement and <span id="stored-tu-ptr">**stores a pointer**</span> to the tagged-union for later use _(compiler should be able to optimize this out)_,
 that is why the macro requires the type of the tagged-union and a pointer to it.
-Each `on_tag` handles the specific union member,
+Each `tu_matches` handles the specific union member,
 for that you need to specify tag enum **label** _(from which the right member and its type is derrived)_,
 name of a variable to which a pointer to the member will be stored [from previously stored](#stored-tu-ptr) tagged-union _(compiler should be able to optimize this out)_ and 
 what should be done with the variable holding the correctly cast union member _(this code will have its own `{ /*scope*/ break; }`, so there is no "fallthrough" for individual "cases")_.
