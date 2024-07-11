@@ -23,7 +23,9 @@
  */
 #define tu_resolve(tagged_union_type, tagged_union_ptr) \
 { \
+    __TU_IGNORE_SHADOWING_BEGIN \
     tagged_union_type* const __tu = (tagged_union_ptr); \
+    __TU_IGNORE_SHADOWING_END \
     switch ((tagged_union_ptr)->tag_value) \
     { \
         {
@@ -102,6 +104,26 @@ typedef struct { \
 #define matches(tag_label, member_ptr_name) tu_matches(tag_label, member_ptr_name)
 #define no_match tu_no_match
 #define resolved tu_resolved
+#endif
+
+#if defined(__GNUC__) || defined(__GNUG__)
+#define __TU_IGNORE_SHADOWING_BEGIN \
+_Pragma("GCC diagnostic push") \
+_Pragma("GCC diagnostic ignored \"-Wshadow\"")
+#define __TU_IGNORE_SHADOWING_END \
+_Pragma("GCC diagnostic pop")
+#elif defined(__clang__)
+#define __TU_IGNORE_SHADOWING_BEGIN \
+_Pragma("clang diagnostic push") \
+_Pragma("clang diagnostic ignored \"-Wshadow\"")
+#define __TU_IGNORE_SHADOWING_END \
+_Pragma("clang diagnostic pop")
+#elif defined(_MSC_VER)
+#define __TU_IGNORE_SHADOWING_BEGIN
+#define __TU_IGNORE_SHADOWING_END
+#else
+#define __TU_IGNORE_SHADOWING_BEGIN
+#define __TU_IGNORE_SHADOWING_END
 #endif
 
 #endif
