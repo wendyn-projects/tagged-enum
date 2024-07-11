@@ -49,6 +49,13 @@ case tag_label: \
 default: \
 {
 
+#ifndef TU_NO_SHORTHAND
+#define resolve(tagged_union_type, tagged_union_ptr) tu_resolve(tagged_union_type, tagged_union_ptr)
+#define matches(tag_label, member_ptr_name) tu_matches(tag_label, member_ptr_name)
+#define no_match tu_no_match
+#define resolved tu_resolved
+#endif
+
 /**
  * end of the wrapped `switch` statement
  */

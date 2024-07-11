@@ -31,17 +31,17 @@ int main(void)
     
     for (i = 0; i < sizeof(lShapes) / sizeof(*lShapes); i++)
     {
-        tu_resolve (Shape, lShapes + i)
-            tu_matches (LINE, line)
+        resolve (Shape, lShapes + i)
+            matches (LINE, line)
                 line->mDirection = 0;
                 printf("len: %f dir: %f\n", line->mLength, line->mDirection);
-            tu_matches (TRIANGLE, triangle)
+            matches (TRIANGLE, triangle)
                 printf("sides: %f %f %f\n", triangle->mA, triangle->mB, triangle->mC);
-            tu_matches (NUMBER, num)
+            matches (NUMBER, num)
                 printf("%f\n", *num);
-            tu_no_match
+            no_match
                 printf("???\n");
-        tu_resolved
+        resolved
     }
     return 0;
 }
