@@ -82,7 +82,7 @@ default: \
  * @param tag_label tag enum **label**
  * @param tagged_union_ptr pointer to the tagged-union
  */
-#define tu_cast_ptr(tag_label, tagged_union_ptr) (tu_check_ptr(tagged_union_ptr, tag_label)? &(tagged_union_ptr)->untagged_union.tag_label : NULL)
+#define tu_cast_ptr(tag_label, tagged_union_ptr) (tu_check_ptr((tagged_union_ptr), tag_label)? &(tagged_union_ptr)->untagged_union.tag_label : NULL)
 
 #define __tu_create_typedefs(tag_label, ...) typedef __VA_ARGS__ tag_label##_t;
 #define __tu_create_tags(tag_label, ...) tag_label,
