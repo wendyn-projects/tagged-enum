@@ -40,16 +40,13 @@ Header provides `tu_resolve` macro which helps to process individual cases.
 for (i = 0; i < sizeof(lShapes) / sizeof(*lShapes); i++)
 {
     tu_resolve (Shape, lShapes + i)
-        tu_matches (LINE, line,
+        tu_matches (LINE, line)
             line->mDirection = 0;
             printf("len: %f dir: %f\n", line->mLength, line->mDirection);
-        )
-        tu_matches (TRIANGLE, triangle,
+        tu_matches (TRIANGLE, triangle)
             printf("sides: %f %f %f\n", triangle->mA, triangle->mB, triangle->mC);
-        )
-        tu_matches (NUMBER, num,
+        tu_matches (NUMBER, num)
             printf("%f\n", *num);
-        )
     tu_resolved
 }
 ```

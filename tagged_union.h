@@ -25,26 +25,34 @@
 { \
     tagged_union_type* const __tu = (tagged_union_ptr); \
     switch ((tagged_union_ptr)->tag_value) \
-    {
+    { \
+        {
 
 /**
  * `case` wrapper that safely casts the right union member (from previously stored pointer) based on the tag.
  * @param tag tag enum **label**
  * @param member_ptr_name pointer that will be created for the correct union member, compiler should be able to optimize it out.
- * @param ... code for the union member
  */
-#define tu_matches(tag, member_ptr_name, ...) \
+#define tu_matches(tag, member_ptr_name) \
+    break; \
+} \
 case tag: \
 { \
-    tag##_t* const member_ptr_name = &__tu->untagged_union.tag; \
-    __VA_ARGS__ \
+    tag##_t* const member_ptr_name = &__tu->untagged_union.tag;
+
+/**
+ * `default` wrapper
+ */
+#define tu_no_match \
     break; \
-}
+} \
+default: \
+{
 
 /**
  * end of the wrapped `switch` statement
  */
-#define tu_resolved } }
+#define tu_resolved } } }
 
 #define __tu_create_typedefs(tag, ...) typedef __VA_ARGS__ tag##_t;
 #define __tu_create_tags(tag, ...) tag,
